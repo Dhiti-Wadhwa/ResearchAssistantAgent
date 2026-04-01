@@ -4,11 +4,15 @@ from langchain.tools import tool
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain_community.document_loaders import PyPDFLoader
 import matplotlib.pyplot as plt
-import os 
 from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+print("API KEY:", os.getenv("OPENAI_API_KEY"))
 
 llm = ChatOpenAI(model = "openai/gpt-3.5-turbo", 
-                 api_key="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" , 
+                 api_key=os.getenv("OPENAI_API_KEY"), 
                  base_url = "https://openrouter.ai/api/v1",
                  temperature=0)
 
@@ -23,7 +27,7 @@ def web_search(query:str) -> str:
 def read_pdf(query:str) -> str:
     """Reads and summarizes content"""
     try: 
-        loader = PyPDFLoader("AI - LAB CA Instructions - SEM VI - 2026.pdf")
+        loader = PyPDFLoader("sample3.pdf")
         pages = loader.load()
         text = ""
         for p in pages:
@@ -57,3 +61,5 @@ while True:
         if hasattr(message,'type') and message.type == "ai":
             print("\n FINAL ANSWER: \n", message.content)
             break
+        
+        
